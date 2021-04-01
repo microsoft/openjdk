@@ -4,4 +4,4 @@ To learn more about this distribution, visit [microsoft.com/openjdk](https://www
 
 # Feedback
 
-If you have found any issues with our binaries, please [report here](https://github.com/microsoft/openjdk/issues).
+If you have any thoughts about our binaries, please [share them here](https://github.com/microsoft/openjdk/discussions).

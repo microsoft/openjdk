@@ -1,5 +1,7 @@
-TODO: Create a file called LICENSE (not LICENSE.TXT, LICENSE.md, etc.)…
+# Microsoft Build of OpenJDK
 
-- OpenJDK for Windows on ARM64
-- OpenJDK 11
-- OpenJDK 8
+To learn more about this distribution, visit [microsoft.com/openjdk](https://www.microsoft.com/openjdk).
+
+# Feedback
+
+If you have found any issues with our binaries, please [report here](https://github.com/microsoft/openjdk/issues).

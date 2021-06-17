@@ -30,6 +30,8 @@ If applicable, add screenshots to help explain your problem.
 - Browser [e.g. chrome, safari]
 - Version [e.g. 22]
 
+- OS & version [e.g. Windows 10, 1822]:
+- Browser & version [e.g. Edge, 91.0.864.48]:
 **Smartphone (please complete the following information):**
 
 - Device: [e.g. iPhone6]

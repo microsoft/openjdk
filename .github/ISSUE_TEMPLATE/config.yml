@@ -2,5 +2,5 @@ blank_issues_enabled: false
 
 contact_links:
   - name: Minecraft Java Edition Related Issue 🔐
-    url: https://bugs.mojang.com/projects/MC/summary/
+    url: https://bugs.mojang.com/projects/MC/summary
     about: Please submit Minecraft Java Edition related issues to the Mojang Issue Tracker First :-).

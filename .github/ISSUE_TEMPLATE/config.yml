@@ -2,5 +2,5 @@ blank_issues_enabled: true
 
 contact_links:
   - name: Minecraft Java Edition Related Bug 🔐
-    url: https://bugs.mojang.com/projects/MC/issues/
-    about: We love Minecraft and would love to help! However, this probably isn't quite the right place to report this issue :-). Please submit Minecraft Java Edition related issues to the Mojang folks who will take the first pass at triaging the issue. If it is a genuine Microsoft Build of OpenJDK (Java/JVM) issue then they will open an issue with us, and we'll work together to resolve it. For context, most Java crash reports relating to Minecraft Java Edition are the result of Java calling a buggy native library, O/S driver etc. So although you'll see a _Java_ crash report, the root cause is typically not Java itself, but inside the library that Java called.
+    url: https://bugs.mojang.com/projects/MC/summary
+    about: We love Minecraft and would love to help! However, this probably isn't quite the right place to report this issue :-). Please submit Minecraft Java Edition related issues to the Mojang folks who will take the first pass at triaging the issue. If it is a genuine Microsoft Build of OpenJDK (Java/JVM) issue then they will open an issue with us, and we'll work together to resolve it. For context, most Java crash reports relating to Minecraft Java Edition are the result of Java calling a buggy native library, O/S driver etc. So although you'll see a Java crash report, the root cause is typically not Java itself, but inside the library that Java called.

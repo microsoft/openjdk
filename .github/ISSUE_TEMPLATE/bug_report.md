@@ -10,7 +10,15 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+**Desktop (please complete the following information):**
+
+OS & version [e.g. Windows 10, 1822]:
+
+**MSFT Build of OpenJDK Version:**
+
+The output from `java --version`
+
+**To Reproduce:**
 Steps to reproduce the behavior:
 
 1. Go to '...'
@@ -21,23 +29,8 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
-
-- OS: [e.g. iOS]
-- Browser [e.g. chrome, safari]
-- Version [e.g. 22]
-
-- OS & version [e.g. Windows 10, 1822]:
-- Browser & version [e.g. Edge, 91.0.864.48]:
-**Smartphone (please complete the following information):**
-
-- Device: [e.g. iPhone6]
-- OS: [e.g. iOS8.1]
-- Browser [e.g. stock browser, safari]
-- Version [e.g. 22]
+**Screenshots, Logs etc**
+If applicable, add screenshots, logs to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.

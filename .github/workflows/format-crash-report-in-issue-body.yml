@@ -1,0 +1,44 @@
+# Format crash reports as code block which have been pasted into issue body without any formatting
+name: Format crash report in issue body
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  format-crash-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Format crash report
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const issueNumber = context.issue.number
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const issueBody = (await github.issues.get({
+              owner: owner,
+              repo: repo,
+              issue_number: issueNumber,
+            })).data.body
+
+            // Check if issue contains code block
+            if (issueBody.includes('```')) {
+              console.log('Issue body seems to contain code block; skipping formatting')
+              return
+            }
+
+            // Matches the content of an unindented crash report
+            const crashReportPattern = /^#(\r\n|\r|\n)^# A fatal error has been detected by the Java Runtime Environment:$.*^END\.$/ms
+            const newIssueBody = issueBody.replace(crashReportPattern, '\n```\n$&\n```\n')
+
+            if (newIssueBody === issueBody) {
+              console.log('Did not find crash report in issue body')
+            } else {
+              console.log('Found crash report in issue body, formatting it')
+              github.issues.update({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                body: newIssueBody,
+              })
+            }

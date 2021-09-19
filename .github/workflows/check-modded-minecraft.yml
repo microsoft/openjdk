@@ -1,0 +1,89 @@
+name: Check modded Minecraft
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  check-modded-minecraft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: npm install axios
+      - name: Check modded Minecraft
+        uses: actions/github-script@v4
+        with:
+          script: |
+            // Strings which indicate that Minecraft is modded
+            const moddedStrings = [
+              'net.fabricmc.loader.launch.knot.KnotClient',
+              'net.fabricmc.loader.impl.launch.knot.KnotClient', // new class name
+              '--version fabric-loader-',
+              '--tweakClass optifine.OptiFineTweaker',
+            ]
+
+            const axios = require('axios')
+
+            async function httpGet(url) {
+              const result = await axios.get(url, {
+                responseType: 'text'
+              })
+              const status = result.status
+              const data = result.data
+              if (status < 200 || status >= 300) {
+                throw new Error(`GET request to ${url} failed with ${status} '${result.statusText}': ${data}`)
+              }
+              return data
+            }
+
+            const issueNumber = context.issue.number
+            const owner = context.repo.owner
+            const repo = context.repo.repo
+            const issueBody = (await github.issues.get({
+              owner: owner,
+              repo: repo,
+              issue_number: issueNumber,
+            })).data.body
+
+            const foundModdedStrings = moddedStrings.filter(s => issueBody.includes(s))
+            if (foundModdedStrings.length === 0) {
+              console.log('Did not find modded string in issue body, searching attachments')
+              // Try searching in attachments
+              // There is currently no API so try to find URL then get attachment content, see https://github.community/t/get-files-attached-in-issue/117443
+              const attachmentPattern = new RegExp(`https://github\\.com/${owner}/${repo}/files/\\d+/[a-zA-Z0-9_\\-.]+`, 'g')
+              const attachmentUrls = Array.from(issueBody.matchAll(attachmentPattern), m => m[0])
+              console.log('Found attachment URLs', attachmentUrls)
+              for (const url of attachmentUrls) {
+                let attachment = undefined
+                try {
+                  attachment = await httpGet(url)
+                } catch (e) {
+                  // Only log message because complete error is rather verbose
+                  console.log('Failed getting attachment for ' + url, e.message)
+                  continue
+                }
+                moddedStrings.forEach(s => {
+                  if (attachment.includes(s)) {
+                    foundModdedStrings.push(s)
+                  }
+                })
+              }
+            }
+
+            if (foundModdedStrings.length === 0) {
+              console.log('Did not find modded strings')
+            } else {
+              console.log('Found modded strings', foundModdedStrings)
+              // Only comment, but don't close issue in case findings are false positives
+              github.issues.createComment({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                body: (
+                  'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
+                  + foundModdedStrings.join('\n')
+                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please attach that crash report here as well.'
+                )
+              })
+            }

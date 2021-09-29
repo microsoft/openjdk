@@ -4,7 +4,7 @@ To learn more about this distribution, visit [microsoft.com/openjdk](https://www
 
 ## License
 
-General Public License 2.0 with Classpath Exception (GPLv2+CE). See [LICENSE](./LICENSE) file.
+MIT
 
 ## Feedback
 

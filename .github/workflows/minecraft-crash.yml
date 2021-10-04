@@ -1,17 +1,17 @@
-name: Check modded Minecraft
+name: Check Minecraft crash
 on:
   issues:
     types: [opened]
 
 jobs:
-  check-modded-minecraft:
+  check-minecraft-crash:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
       - run: npm install axios
-      - name: Check modded Minecraft
+      - name: Check Minecraft crash
         uses: actions/github-script@v4
         with:
           script: |
@@ -40,11 +40,13 @@ jobs:
             const issueNumber = context.issue.number
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const issueBody = (await github.issues.get({
+            const issueData = (await github.issues.get({
               owner: owner,
               repo: repo,
               issue_number: issueNumber,
-            })).data.body
+            })).data
+            const issueTitle = issueData.title
+            const issueBody = issueData.body
 
             const foundModdedStrings = moddedStrings.filter(s => issueBody.includes(s))
             if (foundModdedStrings.length === 0) {
@@ -71,10 +73,24 @@ jobs:
               }
             }
 
+            // Uses lookbehind and lookahead instead of \W to match start and end of string as well
+            const minecraftRegex = /(?<!\w)Minecraft(?!\w)/i
+            const isMinecraftIssue = minecraftRegex.test(issueTitle) || minecraftRegex.test(issueBody)
+            console.log('Is Minecraft issue: ' + isMinecraftIssue)
+
+            // Check if body mentions Mojira issue key, e.g. MC-123456
+            const refersToMojiraReport = /(?<!\w)MC-\d{6,}(?!\w)/i.test(issueBody)
+            console.log('Refers to Mojira report: ' + refersToMojiraReport)
+            let addReportToMojangComment = !refersToMojiraReport
+
             if (foundModdedStrings.length === 0) {
               console.log('Did not find modded strings')
             } else {
               console.log('Found modded strings', foundModdedStrings)
+
+              // Don't tell user to report modded crashes on Mojira; they will be considered Invalid
+              addReportToMojangComment = false
+
               // Only comment, but don't close issue in case findings are false positives
               github.issues.createComment({
                 owner: owner,
@@ -85,5 +101,31 @@ jobs:
                   + foundModdedStrings.join('\n')
                   + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please attach that crash report here as well.'
                 )
+              })
+            }
+
+            if (isMinecraftIssue) {
+              const labelsToAdd = ['Minecraft']
+
+              if (addReportToMojangComment) {
+                labelsToAdd.push('Waiting on OP')
+                github.issues.createComment({
+                  owner: owner,
+                  repo: repo,
+                  issue_number: issueNumber,
+                  body: (
+                    'Thank you for the report!\n'
+                    + 'Can you please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary)? '
+                    + 'Please search for existing reports first; in case you did not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
+                    + 'The Mojang team will take the first look.'
+                  )
+                })
+              }
+
+              github.issues.addLabels({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                labels: labelsToAdd
               })
             }

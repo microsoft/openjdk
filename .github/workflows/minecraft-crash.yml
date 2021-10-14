@@ -129,10 +129,10 @@ jobs:
               })
 
               // We will close any Minecraft-related issue automatically.
-              github.rest.issues.update({
+              github.issues.update({
                 owner: owner,
                 repo: repo,
-                issue_number: inputs.issueNumber,
+                issue_number: issueNumber,
                 state: 'closed'
               })
             }

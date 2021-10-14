@@ -91,7 +91,7 @@ jobs:
               // Don't tell user to report modded crashes on Mojira; they will be considered Invalid
               addReportToMojangComment = false
 
-              // Only comment, but don't close issue in case findings are false positives
+              // Only comment, and close issue. If user believes this was a false positive, ask them to reopen.
               github.issues.createComment({
                 owner: owner,
                 repo: repo,
@@ -100,32 +100,39 @@ jobs:
                   'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
                   + foundModdedStrings.join('\n')
                   + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please attach that crash report here as well.'
+                  + '\nIf you are not using a mod and believe this is an OpenJDK bug, please reopen the issue.'
                 )
               })
             }
 
             if (isMinecraftIssue) {
-              const labelsToAdd = ['Minecraft']
-
               if (addReportToMojangComment) {
-                labelsToAdd.push('Waiting on OP')
                 github.issues.createComment({
                   owner: owner,
                   repo: repo,
                   issue_number: issueNumber,
                   body: (
                     'Thank you for the report!\n'
-                    + 'Can you please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary)? '
-                    + 'Please search for existing reports first; in case you did not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
-                    + 'The Mojang team will take the first look.'
+                    + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
+                    + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
+                    + 'The Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
                   )
                 })
               }
-
+            
+              // add Minecraft label
               github.issues.addLabels({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,
-                labels: labelsToAdd
+                labels: ['Minecraft']
+              })
+
+              // We will close any Minecraft-related issue automatically.
+              github.rest.issues.update({
+                owner: owner,
+                repo: repo,
+                issue_number: inputs.issueNumber,
+                state: 'closed'
               })
             }

@@ -119,6 +119,14 @@ jobs:
                   )
                 })
               }
+            
+              // add Minecraft label
+              github.issues.addLabels({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                labels: ['Minecraft']
+              })
 
               // We will close any Minecraft-related issue automatically.
               github.rest.issues.update({

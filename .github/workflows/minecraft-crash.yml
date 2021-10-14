@@ -113,8 +113,8 @@ jobs:
                   issue_number: issueNumber,
                   body: (
                     'Thank you for the report!\n'
-                    + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary).? '
-                    + 'Please search for existing reports first; in case you did not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
+                    + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
+                    + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
                     + 'The Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
                   )
                 })

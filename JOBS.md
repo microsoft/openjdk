@@ -18,5 +18,16 @@ working with Microsoft tools and services the best it can be. If you are interes
 
 ## Open Positions
 
-TODO
+### Austin, TX, United States
+
+Relocation available for eligible candidates.
+
+1. [Senior Software Engineer (C++, compilers/runtime)][job1]
+1. [Software Engineer][job2]
+
+[job1]: https://careers.microsoft.com/us/en/job/1120018/Senior-Software-Engineer
+[job2]: https://careers.microsoft.com/us/en/job/1173754/Software-Engineer
+
+
+
 

@@ -10,7 +10,7 @@ Our group actively works on the OpenJDK project, builds and ships the Microsoft 
 performance analysis and diagnostic tooling, and provides insights for internal and external developers to build more performant and cost-effective modern
 cloud native Java apps. 
 
-We act as a liaison between Microsoft and the wider Java ecosystem and community, and as a Java PM at Microsoft, you will help define the best tooling 
+We act as a liaison between Microsoft and the wider Java ecosystem and community, and as a member of this group, you will help build the best tooling 
 experiences to make Microsoft tools and services loved by so many Java developers. 
 
 Microsoft’s Java Engineering Group is looking for engineers, program managers and team leads interested in helping make the developer experience for Java

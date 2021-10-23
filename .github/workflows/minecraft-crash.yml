@@ -94,10 +94,11 @@ jobs:
                 repo: repo,
                 issue_number: issueNumber,
                 body: (
-                  'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
+                  'Thank you for the report!\n'
+                  + 'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
                   + foundModdedStrings.join('\n')
-                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please attach that crash report here as well.'
-                  + '\nIf you are not using a mod and believe this is an OpenJDK bug, please reopen the issue.'
+                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
+                  + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
                 )
               })
             }

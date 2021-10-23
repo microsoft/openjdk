@@ -12,7 +12,7 @@ jobs:
           node-version: 14
       - run: npm install axios
       - name: Check Minecraft crash
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
             // Strings which indicate that Minecraft is modded
@@ -40,7 +40,7 @@ jobs:
             const issueNumber = context.issue.number
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const issueData = (await github.issues.get({
+            const issueData = (await github.rest.issues.get({
               owner: owner,
               repo: repo,
               issue_number: issueNumber,
@@ -89,7 +89,7 @@ jobs:
               addReportToMojangComment = false
 
               // Only comment, and close issue. If user believes this was a false positive, ask them to reopen.
-              github.issues.createComment({
+              github.rest.issues.createComment({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,
@@ -104,7 +104,7 @@ jobs:
 
             if (isMinecraftIssue) {
               if (addReportToMojangComment) {
-                github.issues.createComment({
+                github.rest.issues.createComment({
                   owner: owner,
                   repo: repo,
                   issue_number: issueNumber,
@@ -118,7 +118,7 @@ jobs:
               }
 
               // add Minecraft label
-              github.issues.addLabels({
+              github.rest.issues.addLabels({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,
@@ -126,7 +126,7 @@ jobs:
               })
 
               // We will close any Minecraft-related issue automatically.
-              github.issues.update({
+              github.rest.issues.update({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,

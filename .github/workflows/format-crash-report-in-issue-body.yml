@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Format crash report
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
             const issueNumber = context.issue.number
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const issueBody = (await github.issues.get({
+            const issueBody = (await github.rest.issues.get({
               owner: owner,
               repo: repo,
               issue_number: issueNumber,
@@ -35,7 +35,7 @@ jobs:
               console.log('Did not find crash report in issue body')
             } else {
               console.log('Found crash report in issue body, formatting it')
-              github.issues.update({
+              github.rest.issues.update({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,

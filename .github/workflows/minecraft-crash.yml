@@ -78,10 +78,7 @@ jobs:
             const isMinecraftIssue = minecraftRegex.test(issueTitle) || minecraftRegex.test(issueBody)
             console.log('Is Minecraft issue: ' + isMinecraftIssue)
 
-            // Check if body mentions Mojira issue key, e.g. MC-123456
-            const refersToMojiraReport = /(?<!\w)MC-\d{6,}(?!\w)/i.test(issueBody)
-            console.log('Refers to Mojira report: ' + refersToMojiraReport)
-            let addReportToMojangComment = !refersToMojiraReport
+            let addReportToMojangComment = true
 
             if (foundModdedStrings.length === 0) {
               console.log('Did not find modded strings')
@@ -119,7 +116,7 @@ jobs:
                   )
                 })
               }
-            
+
               // add Minecraft label
               github.issues.addLabels({
                 owner: owner,

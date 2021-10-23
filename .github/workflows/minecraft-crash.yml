@@ -12,7 +12,7 @@ jobs:
           node-version: 14
       - run: npm install axios
       - name: Check Minecraft crash
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           script: |
             // Strings which indicate that Minecraft is modded
@@ -40,7 +40,7 @@ jobs:
             const issueNumber = context.issue.number
             const owner = context.repo.owner
             const repo = context.repo.repo
-            const issueData = (await github.issues.get({
+            const issueData = (await github.rest.issues.get({
               owner: owner,
               repo: repo,
               issue_number: issueNumber,
@@ -78,10 +78,7 @@ jobs:
             const isMinecraftIssue = minecraftRegex.test(issueTitle) || minecraftRegex.test(issueBody)
             console.log('Is Minecraft issue: ' + isMinecraftIssue)
 
-            // Check if body mentions Mojira issue key, e.g. MC-123456
-            const refersToMojiraReport = /(?<!\w)MC-\d{6,}(?!\w)/i.test(issueBody)
-            console.log('Refers to Mojira report: ' + refersToMojiraReport)
-            let addReportToMojangComment = !refersToMojiraReport
+            let addReportToMojangComment = true
 
             if (foundModdedStrings.length === 0) {
               console.log('Did not find modded strings')
@@ -92,22 +89,23 @@ jobs:
               addReportToMojangComment = false
 
               // Only comment, and close issue. If user believes this was a false positive, ask them to reopen.
-              github.issues.createComment({
+              github.rest.issues.createComment({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,
                 body: (
-                  'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
+                  'Thank you for the report!\n'
+                  + 'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
                   + foundModdedStrings.join('\n')
-                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please attach that crash report here as well.'
-                  + '\nIf you are not using a mod and believe this is an OpenJDK bug, please reopen the issue.'
+                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
+                  + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
                 )
               })
             }
 
             if (isMinecraftIssue) {
               if (addReportToMojangComment) {
-                github.issues.createComment({
+                github.rest.issues.createComment({
                   owner: owner,
                   repo: repo,
                   issue_number: issueNumber,
@@ -119,9 +117,9 @@ jobs:
                   )
                 })
               }
-            
+
               // add Minecraft label
-              github.issues.addLabels({
+              github.rest.issues.addLabels({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,
@@ -129,7 +127,7 @@ jobs:
               })
 
               // We will close any Minecraft-related issue automatically.
-              github.issues.update({
+              github.rest.issues.update({
                 owner: owner,
                 repo: repo,
                 issue_number: issueNumber,

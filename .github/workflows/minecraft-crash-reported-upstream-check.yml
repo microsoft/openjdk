@@ -1,0 +1,58 @@
+name: Add Minecraft upstream label
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  check-reported-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check reported upstream
+        # Ignore pull request comments, see
+        # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#issue_comment
+        if: ${{ !github.event.issue.pull_request }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // See documentation for payload properties
+            // https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issue_comment
+            const issue = context.payload.issue
+
+            const sender = context.payload.sender.login
+
+            if (issue.user.login !== sender) {
+              console.log('Ignoring comment by user other than author')
+              return
+            }
+
+            const reportedUpstreamLabel = 'Reported Upstream'
+            const issueLabels = issue.labels.map(label => label.name)
+
+            if (issueLabels.includes(reportedUpstreamLabel)) {
+              console.log('Ignoring issue because it already has upstream label')
+              return
+            }
+            if (!issueLabels.includes('Minecraft')) {
+              console.log('Ignoring issue because it is not labeled as Minecraft')
+              return
+            }
+
+            const commentBody = context.payload.comment.body
+            // Check if comment mentions Mojira issue key, e.g. MC-123456
+            const matchedMojiraIssueKey = /(?<!\w)MC-\d{6,}(?!\w)/i.exec(commentBody)
+
+            if (matchedMojiraIssueKey === null) {
+              console.log('Did not find Mojira issue key in comment')
+            }
+            else {
+              console.log(`Found Mojira issue key ${matchedMojiraIssueKey[0]}, adding label`)
+
+              const owner = context.repo.owner
+              const repo = context.repo.repo
+              github.rest.issues.addLabels({
+                owner: owner,
+                repo: repo,
+                issue_number: issue.number,
+                labels: [reportedUpstreamLabel]
+              })
+            }

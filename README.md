@@ -2,6 +2,12 @@
 
 To learn more about this distribution, visit [microsoft.com/openjdk](https://www.microsoft.com/openjdk).
 
+## Releases
+
+Visit the [Releases](https://github.com/microsoft/openjdk/releases) page for the latest versions of the Microsoft Build of OpenJDK.
+
+## Contribute
+
 **Q:** Where is the source code for your distribution?
 
 **A:** We will be releasing our source code for jdk11u and jdk17u in the coming months to their own GitHub Repo. Meanwhile, you can see the source code we pull from at [github.com/openjdk](https://github.com/openjdk).

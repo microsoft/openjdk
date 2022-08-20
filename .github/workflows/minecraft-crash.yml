@@ -48,6 +48,10 @@ jobs:
             const issueTitle = issueData.title
             const issueBody = issueData.body
 
+            // Uses negative lookbehind and lookahead to match start and end of string as well
+            const minecraftRegex = /(?<![a-z])Minecraft(?![a-z])/i
+            let isMinecraftIssue = minecraftRegex.test(issueTitle) || minecraftRegex.test(issueBody)
+
             const foundModdedStrings = moddedStrings.filter(s => issueBody.includes(s))
             if (foundModdedStrings.length === 0) {
               console.log('Did not find modded string in issue body, searching attachments')
@@ -65,6 +69,14 @@ jobs:
                   console.log('Failed getting attachment for ' + url, e.message)
                   continue
                 }
+
+                if (!isMinecraftIssue) {
+                  isMinecraftIssue = minecraftRegex.test(attachment)
+                  if (isMinecraftIssue) {
+                    console.log('Found Minecraft string in attachment')
+                  }
+                }
+
                 moddedStrings.forEach(s => {
                   if (attachment.includes(s)) {
                     foundModdedStrings.push(s)
@@ -73,52 +85,44 @@ jobs:
               }
             }
 
-            // Uses lookbehind and lookahead instead of \W to match start and end of string as well
-            const minecraftRegex = /(?<!\w)Minecraft(?!\w)/i
-            const isMinecraftIssue = minecraftRegex.test(issueTitle) || minecraftRegex.test(issueBody)
+            let isCrashFromModdedMinecraft = foundModdedStrings.length > 0
+
+            if (isCrashFromModdedMinecraft) {
+              console.log('Found modded strings', foundModdedStrings)
+            } else {
+              console.log('Did not find modded strings')
+            }
+            isMinecraftIssue = isMinecraftIssue || isCrashFromModdedMinecraft
             console.log('Is Minecraft issue: ' + isMinecraftIssue)
 
-            let addReportToMojangComment = true
-
-            if (foundModdedStrings.length === 0) {
-              console.log('Did not find modded strings')
-            } else {
-              console.log('Found modded strings', foundModdedStrings)
-
-              // Don't tell user to report modded crashes on Mojira; they will be considered Invalid
-              addReportToMojangComment = false
-
-              // Only comment, and close issue. If user believes this was a false positive, ask them to reopen.
-              github.rest.issues.createComment({
-                owner: owner,
-                repo: repo,
-                issue_number: issueNumber,
-                body: (
+            if (isMinecraftIssue) {
+              let commentBody
+              if (isCrashFromModdedMinecraft) {
+                // Don't tell user to report modded crashes on Mojang's bug tracker; they will be considered Invalid
+                commentBody = (
                   'Thank you for the report!\n'
                   + 'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
                   + foundModdedStrings.join('\n')
                   + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
                   + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
                 )
-              })
-            }
-
-            if (isMinecraftIssue) {
-              if (addReportToMojangComment) {
-                github.rest.issues.createComment({
-                  owner: owner,
-                  repo: repo,
-                  issue_number: issueNumber,
-                  body: (
-                    'Thank you for the report!\n'
-                    + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
-                    + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
-                    + 'The Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
-                  )
-                })
+              } else {
+                commentBody = (
+                  'Thank you for the report!\n'
+                  + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
+                  + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
+                  + 'The Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
+                )
               }
 
-              // add Minecraft label
+              github.rest.issues.createComment({
+                owner: owner,
+                repo: repo,
+                issue_number: issueNumber,
+                body: commentBody
+              })
+
+              // Add Minecraft label
               github.rest.issues.addLabels({
                 owner: owner,
                 repo: repo,
@@ -126,7 +130,7 @@ jobs:
                 labels: ['Minecraft']
               })
 
-              // We will close any Minecraft-related issue automatically.
+              // We will close any Minecraft-related issue automatically
               github.rest.issues.update({
                 owner: owner,
                 repo: repo,

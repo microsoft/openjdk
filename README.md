@@ -19,9 +19,7 @@ The source code of our container images are hosted on the following repository:
 
 ## Contribute
 
-**Q:** Where is the source code for your distribution?
-
-**A:** We will be releasing our source code for jdk11u and jdk17u in the coming months to their own GitHub Repo. Meanwhile, you can see the source code we pull from at [github.com/openjdk](https://github.com/openjdk).
+Feel free to open Issues in this repository, or any of the repositories above, as well as initiating conversations through GitHub Discussions.
 
 ## Jobs
 
@@ -33,7 +31,7 @@ MIT
 
 **Q:** Why is the license for this repo MIT as opposed to GPLv2+CE?
 
-**A:** Because *this* repo doesn't contain actual OpenJDK source code, just issues, discussions and some GitHub Actions.
+**A:** Because *this* repo doesn't contain actual OpenJDK source code. We only use this repository for general issues, discussions and possibly GitHub Actions workflows.
 
 ## Feedback
 

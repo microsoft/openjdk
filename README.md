@@ -6,6 +6,17 @@ To learn more about this distribution, visit [microsoft.com/openjdk](https://www
 
 Visit the [Releases](https://github.com/microsoft/openjdk/releases) page for the latest versions of the Microsoft Build of OpenJDK.
 
+## Source Code
+
+The source code of our builds are hosted on the following repositories:
+
+1. [microsoft/openjdk-jdk11u](https://github.com/microsoft/openjdk-jdk11u)
+1. [microsoft/openjdk-jdk17u](https://github.com/microsoft/openjdk-jdk17u)
+
+The source code of our container images are hosted on the following repository:
+
+* [microsoft/openjdk-docker](https://github.com/microsoft/openjdk-docker)
+
 ## Contribute
 
 **Q:** Where is the source code for your distribution?

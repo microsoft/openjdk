@@ -21,6 +21,10 @@ jobs:
               'net.fabricmc.loader.impl.launch.knot.KnotClient', // new class name
               '--version fabric-loader-',
               '--tweakClass optifine.OptiFineTweaker',
+              // Minecraft Forge
+              '--launchTarget forgeclient',
+              '--launchTarget fmlserver',
+              '--fml.forgeVersion',
             ]
 
             const axios = require('axios')

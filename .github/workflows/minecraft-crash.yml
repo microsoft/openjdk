@@ -7,12 +7,12 @@ jobs:
   check-minecraft-crash:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - run: npm install axios
       - name: Check Minecraft crash
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             // Strings which indicate that Minecraft is modded

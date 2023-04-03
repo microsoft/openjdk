@@ -98,20 +98,33 @@ jobs:
             if (isMinecraftIssue) {
               let commentBody
               if (isCrashFromModdedMinecraft) {
-                // Don't tell user to report modded crashes on Mojang's bug tracker; they will be considered Invalid
+                // Don't tell user to report modded crashes on Mojang's bug tracker; they will most likely be considered Invalid
                 commentBody = (
-                  'Thank you for the report!\n'
-                  + 'It looks like you are using a modified version of Minecraft. The following was detected in your crash report:\n```\n'
-                  + foundModdedStrings.join('\n')
-                  + '\n```\nPlease report this crash to the mod creator. If you can also reproduce this crash without having any mods installed, please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
-                  + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
+                  'Thank you for the report!'
+                  + '\nIt looks like you are using a modified version of Minecraft. The following was detected in your crash report:'
+                  + '\n```'
+                  + '\n' + foundModdedStrings.join('\n')
+                  + '\n```'
+                  + '\nPlease try the following:'
+                  + '\n- Update your graphics drivers, see [this Minecraft Helper Center article](https://help.minecraft.net/hc/en-us/articles/4409137348877-Minecraft-Java-Edition-Game-Crashes-and-Performance-Issues-FAQ), section "Update your Video Card Drivers";'
+                  + '\n  often Minecraft crashes are caused by outdated graphics drivers'
+                  + '\n- Try disabling the mods you have installed one by one until you find the mod causing the crash, then report the crash to the mod author'
+                  + '\n- If you are using a third-party launcher, try the [official launcher](https://www.minecraft.net/download) instead'
+                  + '\n\nIf none of the above helped, and you are still experiencing the crash with the official launcher and without any mods installed, submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary).'
+                  + ' Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
+                  + '\nThe Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
                 )
               } else {
                 commentBody = (
-                  'Thank you for the report!\n'
-                  + 'Please submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary). '
-                  + 'Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`). '
-                  + 'The Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
+                  'Thank you for the report!'
+                  + '\nIt looks like you are reporting that the game Minecraft crashed for you. Please try the following:'
+                  + '\n- Update your graphics drivers, see [this Minecraft Helper Center article](https://help.minecraft.net/hc/en-us/articles/4409137348877-Minecraft-Java-Edition-Game-Crashes-and-Performance-Issues-FAQ), section "Update your Video Card Drivers";'
+                  + '\n  often Minecraft crashes are caused by outdated graphics drivers'
+                  + '\n- In case you are using mods, try disabling them one by one until you find the mod causing the crash, then report the crash to the mod author'
+                  + '\n- If you are using a third-party launcher, try the [official launcher](https://www.minecraft.net/download) instead'
+                  + '\n\nIf none of the above helped, and you are still experiencing the crash with the official launcher and without any mods installed, submit this issue over at the [Mojang bug tracker](https://bugs.mojang.com/projects/MC/summary).'
+                  + ' Please search for existing reports first; in case you do not find any, create a new report and let us know about the issue number here (e.g. `MC-123456`).'
+                  + '\nThe Mojang team will take the first look. If an OpenJDK bug is identified, the Mojang team will contact the Microsoft Build of OpenJDK team to address the issue.'
                 )
               }
 

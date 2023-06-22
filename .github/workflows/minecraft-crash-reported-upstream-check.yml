@@ -38,8 +38,10 @@ jobs:
             }
 
             const commentBody = context.payload.comment.body
-            // Check if comment mentions Mojira issue key, e.g. MC-123456
-            const matchedMojiraIssueKey = /(?<!\w)MC-\d{6,}(?!\w)/i.exec(commentBody)
+            // Check if comment mentions Mojira issue key, e.g. MC-123456, but not MC-123456 itself,
+            // because it is in the instructions posted by the `minecraft-crash.yml` workflow and
+            // can be quoted in comments
+            const matchedMojiraIssueKey = /(?<!\w)MC-\d{6,}(?!\w)(?<!MC-123456)/i.exec(commentBody)
 
             if (matchedMojiraIssueKey === null) {
               console.log('Did not find Mojira issue key in comment')

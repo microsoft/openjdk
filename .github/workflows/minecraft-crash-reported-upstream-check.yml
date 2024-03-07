@@ -3,6 +3,9 @@ on:
   issue_comment:
     types: [created, edited]
 
+permissions:
+  issues: write
+
 jobs:
   check-reported-upstream:
     runs-on: ubuntu-latest

@@ -3,6 +3,9 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  issues: write
+
 jobs:
   check-minecraft-crash:
     runs-on: ubuntu-latest

@@ -11,7 +11,7 @@ jobs:
         # Ignore pull request comments, see
         # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#issue_comment
         if: ${{ !github.event.issue.pull_request }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             // See documentation for payload properties

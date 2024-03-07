@@ -10,10 +10,6 @@ jobs:
   check-minecraft-crash:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install axios
       - name: Check Minecraft crash
         uses: actions/github-script@v7
         with:
@@ -30,16 +26,12 @@ jobs:
               '--fml.forgeVersion',
             ]
 
-            const axios = require('axios')
-
             async function httpGet(url) {
-              const result = await axios.get(url, {
-                responseType: 'text'
-              })
-              const status = result.status
-              const data = result.data
+              const response = await fetch(url)
+              const status = response.status
+              const data = await response.text()
               if (status < 200 || status >= 300) {
-                throw new Error(`GET request to ${url} failed with ${status} '${result.statusText}': ${data}`)
+                throw new Error(`GET request to ${url} failed with ${status} '${response.statusText}': ${data}`)
               }
               return data
             }

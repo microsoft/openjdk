@@ -24,7 +24,7 @@ jobs:
             const sender = context.payload.sender.login
 
             if (issue.user.login !== sender) {
-              console.log('Ignoring comment by user other than author')
+              core.info('Ignoring comment by user other than author')
               return
             }
 
@@ -32,11 +32,11 @@ jobs:
             const issueLabels = issue.labels.map(label => label.name)
 
             if (issueLabels.includes(reportedUpstreamLabel)) {
-              console.log('Ignoring issue because it already has upstream label')
+              core.info('Ignoring issue because it already has upstream label')
               return
             }
             if (!issueLabels.includes('Minecraft')) {
-              console.log('Ignoring issue because it is not labeled as Minecraft')
+              core.info('Ignoring issue because it is not labeled as Minecraft')
               return
             }
 
@@ -47,10 +47,10 @@ jobs:
             const matchedMojiraIssueKey = /(?<!\w)MC-\d{6,}(?!\w)(?<!MC-123456)/i.exec(commentBody)
 
             if (matchedMojiraIssueKey === null) {
-              console.log('Did not find Mojira issue key in comment')
+              core.info('Did not find Mojira issue key in comment')
             }
             else {
-              console.log(`Found Mojira issue key ${matchedMojiraIssueKey[0]}, adding label`)
+              core.notice(`Found Mojira issue key ${matchedMojiraIssueKey[0]}, adding label`)
 
               const owner = context.repo.owner
               const repo = context.repo.repo

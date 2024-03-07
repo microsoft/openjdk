@@ -26,7 +26,7 @@ jobs:
 
             // Check if issue contains code block
             if (issueBody.includes('```')) {
-              console.log('Issue body seems to contain code block; skipping formatting')
+              core.info('Issue body seems to contain code block; skipping formatting')
               return
             }
 
@@ -35,9 +35,9 @@ jobs:
             const newIssueBody = issueBody.replace(crashReportPattern, '\n```\n$&\n```\n')
 
             if (newIssueBody === issueBody) {
-              console.log('Did not find crash report in issue body')
+              core.info('Did not find crash report in issue body')
             } else {
-              console.log('Found crash report in issue body, formatting it')
+              core.notice('Found crash report in issue body, formatting it')
               github.rest.issues.update({
                 owner: owner,
                 repo: repo,

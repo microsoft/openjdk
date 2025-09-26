@@ -11,8 +11,9 @@ Visit the [Releases](https://github.com/microsoft/openjdk/releases) page for the
 The source code of our builds are hosted on the following repositories:
 
 1. [microsoft/openjdk-jdk11u](https://github.com/microsoft/openjdk-jdk11u)
-2. [microsoft/openjdk-jdk17u](https://github.com/microsoft/openjdk-jdk17u)
-3. [microsoft/openjdk-jdk21u](https://github.com/microsoft/openjdk-jdk21u) 
+1. [microsoft/openjdk-jdk17u](https://github.com/microsoft/openjdk-jdk17u)
+1. [microsoft/openjdk-jdk21u](https://github.com/microsoft/openjdk-jdk21u)
+1. [microsoft/openjdk-jdk25u](https://github.com/microsoft/openjdk-jdk25u) 
 
 The source code of our container images are hosted on the following repository:
 

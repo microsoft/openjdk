@@ -4,7 +4,7 @@ To learn more about this distribution, visit [microsoft.com/openjdk](https://www
 
 ## Releases
 
-Visit the [Releases](https://github.com/microsoft/openjdk/releases) page for the latest versions of the Microsoft Build of OpenJDK.
+Visit the [Downloads](https://aka.ms/msopenjdk-dl) page for the latest versions of the Microsoft Build of OpenJDK.
 
 ## Source Code
 
